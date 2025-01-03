@@ -53,7 +53,6 @@ def merge_close_roots(roots, tolerance=TOL*5):
     """
     if not roots:
         return []
-
     roots.sort()
     merged_roots = [roots[0]]
     for root in roots[1:]:
@@ -165,10 +164,6 @@ def bisection_method(f, a, b, TOL=0.0001, verbose=True):
     # Return the root, iterations, and convergence status
     return c, k, True
 
-    c = a + (b - a) / 2
-    return c, k, abs(f(c)) < TOL
-
-
 def newton_raphson(f, df, TOL=0.0001, N=100, start_point=None, end_point=None, verbose=True):
     """
     Newton-Raphson method for solving f(x) = 0.
@@ -197,6 +192,7 @@ def newton_raphson(f, df, TOL=0.0001, N=100, start_point=None, end_point=None, v
         return None, None, False
         raise ValueError("The scalars 'a' and 'b' do not bound a root")
     print(bcolors.MAGENTA, "\nInterval:", "{:.3f}".format(a), "{:.3f}".format(b), bcolors.ENDC)
+
     # getting initial guess
     p0 = (start_point + end_point) / 2 if start_point + end_point != 0 else TOL
 
@@ -232,7 +228,7 @@ def secant_method(f, x0, x1, TOL=0.0001, N=100, verbose=True):
     x0 (float): First initial guess.
     x1 (float): Second initial guess.
     TOL (float): Tolerance for stopping criteria.
-    N (int): Maximum number of iterations. Defaults to 50.
+    N (int): Maximum number of iterations. Defaults to 100.
     verbose (bool): Whether to print iteration details. Defaults to True.
 
     Returns:
@@ -290,17 +286,12 @@ def initializeSympyPolynomialData():
     # get polynomial from user
     polynomial = x**3 - 2*x
     #print("Polynomial", polynomial)
-    #polynomial = getSympyPoly()
     derivative = sympy.diff(polynomial, x)
     #print("derivative: ",derivative)
-    #f = sympy.utilities.lambdify(x, polynomial)
     f = sympy.utilities.lambdify(x, polynomial, "math")  # Use "math" for mathematical functions
     #print("f: ",f)
-    #print("f(5) = ", f(5))
-    #fTag = sympy.utilities.lambdify(x, derivative)
     fTag = sympy.utilities.lambdify(x, derivative, "math")  # Use "math" for derivative
     #print("ftag: ",fTag)
-    #print("f'(5) = ", fTag(5))
     polynomialDegree = int(sympy.degree(polynomial))
     return polynomial, derivative, f, fTag, polynomialDegree
 
@@ -316,6 +307,7 @@ polynomial, derivative, f, fTag, polynomialDegree = initializeSympyPolynomialDat
 #print(fTag)
 #print("Polynomial degree", polynomialDegree)
 #print("-----------------")
+
 
 # Main code
 # Please input the polynomial you want to use in the function initializeSympyPolynomialData()
