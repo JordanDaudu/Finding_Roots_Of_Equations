@@ -120,7 +120,7 @@ def bisection_method(f, a, b, TOL=0.0001, verbose=True):
     f (function): Continuous function on the interval [a, b], where f(a) and f(b) have opposite signs.
     a (float): Start value of the interval.
     b (float): End value of the interval.
-    tol (float, optional): Tolerable error. Defaults to 1e-6.
+    tol (float, optional): Tolerable error. Defaults to 0.0001.
     verbose (bool, optional): Whether to print iteration details. Defaults to True.
 
     Returns:
@@ -135,8 +135,7 @@ def bisection_method(f, a, b, TOL=0.0001, verbose=True):
         raise ValueError("Tolerance must be positive")
     if f(a) * f(b) >= 0:
         return None, None, False
-        raise ValueError("The scalars 'a' and 'b' do not bound a root")
-    print(bcolors.MAGENTA, "\nInterval:", "{:.3f}".format(a), "{:.3f}".format(b), bcolors.ENDC)
+    print(bcolors.MAGENTA, "\nPotential root in interval:", "{:.3f}".format(a), "{:.3f}".format(b), bcolors.ENDC)
 
     c, k = 0, 0
     minSteps = min_steps_bisection_method(a, b, TOL)  # Calculate the min steps needed
@@ -190,12 +189,11 @@ def newton_raphson(f, df, TOL=0.0001, N=100, start_point=None, end_point=None, v
         raise ValueError("Tolerance must be positive")
     if f(a) * f(b) >= 0:
         return None, None, False
-        raise ValueError("The scalars 'a' and 'b' do not bound a root")
-    print(bcolors.MAGENTA, "\nInterval:", "{:.3f}".format(a), "{:.3f}".format(b), bcolors.ENDC)
 
     # getting initial guess
     p0 = (start_point + end_point) / 2 if start_point + end_point != 0 else TOL
 
+    print(bcolors.MAGENTA, "\nPotential root in interval:", "{:.3f}".format(a), "{:.3f}".format(b), bcolors.ENDC)
     if verbose:
         print("{:<10} {:<15} {:<15} {:<15} {:<15}".format("Iteration", "p0", "f(p0)", "df(p0)", "p"))
 
@@ -243,7 +241,7 @@ def secant_method(f, x0, x1, TOL=0.0001, N=100, verbose=True):
         raise ValueError("Tolerance must be positive")
     if f(x0) * f(x1) >= 0:
         return None, None, False
-    print(bcolors.MAGENTA, "\nInterval:", "{:.3f}".format(x0), "{:.3f}".format(x1), bcolors.ENDC)
+    print(bcolors.MAGENTA, "\nPotential root in interval:", "{:.3f}".format(x0), "{:.3f}".format(x1), bcolors.ENDC)
 
     if verbose:
         print("{:<10} {:<15} {:<15} {:<15}".format("Iteration", "x0", "x1", "p"))
@@ -311,7 +309,7 @@ polynomial, derivative, f, fTag, polynomialDegree = initializeSympyPolynomialDat
 
 # Main code
 # Please input the polynomial you want to use in the function initializeSympyPolynomialData()
-starting_point, ending_point = -3, 3
+starting_point, ending_point = -5, 5
 search_range = generate_intervals(starting_point, ending_point, step=0.1)
 roots = []
 while True:
@@ -331,7 +329,7 @@ while True:
 print("================================================================================")
 
 print(bcolors.ORANGE, f"Searching for roots in the interval [{starting_point}, {ending_point}] in steps of 0.1:", bcolors.ENDC)
-print(bcolors.GOLD ,"Whenever a potential root is found, the method will be applied to the smaller interval to check for convergence.\n", bcolors.ENDC)
+print(bcolors.GOLD ,"Whenever a potential root is found (f(a) * f(b) < 0), the method will be applied to the smaller interval to check for convergence.\n", bcolors.ENDC)
 if choice == 1:
     print(bcolors.HEADER, "Trying f to converge first:", bcolors.ENDC)
     for i in range(len(search_range)):
@@ -378,7 +376,10 @@ if choice == 1:
         except Exception as e:
             print(bcolors.FAIL, f"An error occurred: {e}", bcolors.ENDC)
     roots = merge_close_roots(roots)
-    print(bcolors.OKGREEN, bcolors.BOLD, f"\nRoots found after merging close roots: {roots}", bcolors.ENDC)
+    if not roots:
+        print(bcolors.FAIL, "No roots found for f(x) or fTag(x).", bcolors.ENDC)
+    else:
+        print(bcolors.OKGREEN, bcolors.BOLD, f"\nRoots found after merging close roots: {roots}", bcolors.ENDC)
 
 elif choice == 2:
     for i in range(len(search_range)):
@@ -399,7 +400,10 @@ elif choice == 2:
             print(bcolors.FAIL, f"An error occurred: {e}", bcolors.ENDC)
 
     roots = merge_close_roots(roots)
-    print(bcolors.OKGREEN, bcolors.BOLD, f"\nRoots found after merging close roots: {roots}", bcolors.ENDC)
+    if not roots:
+        print(bcolors.FAIL, "No roots found for f(x).", bcolors.ENDC)
+    else:
+        print(bcolors.OKGREEN, bcolors.BOLD, f"\nRoots found after merging close roots: {roots}", bcolors.ENDC)
 
 elif choice == 3:
     for i in range(len(search_range)):
@@ -420,4 +424,7 @@ elif choice == 3:
             print(bcolors.FAIL, f"An error occurred: {e}", bcolors.ENDC)
 
     roots = merge_close_roots(roots)
-    print(bcolors.OKGREEN, bcolors.BOLD, f"\nRoots found after merging close roots: {roots}", bcolors.ENDC)
+    if not roots:
+        print(bcolors.FAIL, "No roots found for f(x).", bcolors.ENDC)
+    else:
+        print(bcolors.OKGREEN, bcolors.BOLD, f"\nRoots found after merging close roots: {roots}", bcolors.ENDC)
