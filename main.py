@@ -113,7 +113,6 @@ def min_steps_bisection_method(a, b, err):
     return int(k) + 1 if k % 1 != 0 else int(k)
 
 
-
 def bisection_method(f, a, b, TOL=0.0001, verbose=True):
     """
     Perform the bisection method to approximate the root of a continuous function.
@@ -213,7 +212,6 @@ def newton_raphson(f, df, TOL=0.0001, N=100, start_point=None, end_point=None, v
 
         p = p0 - f_p0 / df_p0
 
-
         if verbose:
             print("{:<10} {:<15.9f} {:<15.9f} {:<15.9f} {:<15.9f}".format(i, p0, f_p0, df_p0, p))
 
@@ -290,7 +288,7 @@ def initializeSympyPolynomialData():
     """
     x = sympy.symbols('x')
     # get polynomial from user
-    polynomial = x**2 - 4 * sympy.sin(x)
+    polynomial = x**3 - 2*x
     #print("Polynomial", polynomial)
     #polynomial = getSympyPoly()
     derivative = sympy.diff(polynomial, x)
@@ -305,7 +303,6 @@ def initializeSympyPolynomialData():
     #print("f'(5) = ", fTag(5))
     polynomialDegree = int(sympy.degree(polynomial))
     return polynomial, derivative, f, fTag, polynomialDegree
-
 
 
 # Please input the polynomial you want to use in the function initializeSympyPolynomialData()
